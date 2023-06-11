@@ -12,31 +12,68 @@ from pynput.keyboard import Key, Controller
 
 keyboard=Controller()
 
-while True:
-    pg.leftClick()
-    for c in range(8,6,-1):
-        c = c / 10
-        if pg.locateCenterOnScreen("img\\a.PNG",confidence=c, region=(765,1076,300,60)):
-            print(c, 'a')
-            keyboard.tap("a")
-        elif pg.locateCenterOnScreen("img\\s.PNG",confidence=c, region=(765,1120,300,60)):
-            print(c, 's')
-            keyboard.tap("s")
-        elif pg.locateCenterOnScreen("img\\d.PNG",confidence=c, region=(765,1164,300,60)):
-            print(c, 'd')
-            keyboard.tap("d")
-        elif pg.locateCenterOnScreen("img\\LR.PNG",confidence=c, region=(765,1076,300,70)):
-            print(c, 'LR')
-            pg.click(button='left')
-            pg.click(button='right')
+
+# def cast():
+#     start_time = time.time()
+#     r = (0,0,2000,1000)
+#     pg.mouseDown(button="left")
+#     start_t=time.time()
+#     for _ in range(100):
+#         for c in range(9,6,-1):
+#             c = c / 10
+#             arrow = pg.locateCenterOnScreen("img_fish\\cast_arrow.png",confidence=c, region=r)
+#             point = pg.locateCenterOnScreen("img_fish\\point.png",confidence=c,region=r)
+#             if arrow and point:
+#                 r = (arrow.x-10, arrow.y-10,20,point.y+7-arrow.y)
+#                 print("arrow: ",arrow, 'point: ', point, r, c,time.time() - start_t)
+                
+#                 if abs(arrow.y-point.y)<20:
+#                     print("MAX: ", arrow, point)
+#                     pg.mouseUp(button="left")
+#                     return(True)
+
+TIME_MAX = 1.90
+def cast_initial():
+    global TIME_MAX
+    pg.mouseDown(button="left")
+    time.sleep(TIME_MAX)
+    pg.mouseUp(button="left")
+
+def cast1():
+    r = (0,0,2000,1000)
+    for _ in range(100):
+        for c in range(9,6,-1):
+            c = c / 10
+            floater = pg.locateCenterOnScreen("img_fish\\cast1.png",confidence=c, region=r)
+            if floater:
+                r = (floater.x-30, floater.y-30,60,60)
+                return(r)
+
+def cast2(r):
+    while True:
+        for c in range(9,6,-1):
+            c=c/10
+            time_to_hook = pg.locateCenterOnScreen("img_fish\\cast2.png",confidence=c, region=r)
+            if time_to_hook:
+                return(True)
+
+def pool_the_fish():
+    pg.mouseDown(button="left")
+    time.sleep(8)
+    pg.mouseUp(button="left")
+    time.sleep(1)
+    pg.mouseDown(button="left")
 
 
+end_game=False
+while not end_game:
+    time.sleep(2)
+    start = cast_initial()
+    where_to_look = cast1()
+    hook = cast2(where_to_look)
+    if hook:
+        pool_the_fish()
+ 
 
-
-# Point(x=765, y=1047)
-# Point(x=866, y=1255)
-
-# Point(x=778, y=1106) A
-# Point(x=778, y=1150) S
-# Point(x=783, y=1194) D
-# Point(x=781, y=1228) SPACE
+    end_game=True
+    

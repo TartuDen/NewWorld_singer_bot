@@ -4,7 +4,7 @@ import time
 time.sleep(1)
 pg.press("space")
 
-# 0.8 w  Point(x=1820, y=1066)
+# 0.8 w  Point(x=1820, y   =1066)
 # 0.7 sp  Point(x=705, y=1226)
 # 0.9 a  Point(x=1304, y=1107)
 # 0.9 sp  Point(x=708, y=1227)
